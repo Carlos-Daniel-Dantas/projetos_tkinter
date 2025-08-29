@@ -9,9 +9,10 @@ class janela_principal:
     self.janela = tk.Window(themename='united')
     self.janela.title("Youtube")
     self.janela.geometry("1600x900+80+50")
-    
+
     #texto 1
-    self.label_nome = tk.Label(self.janela, text="Qual Vídeo você deseja assistir:")
+
+    self.label_nome = tk.Label(self.janela, font = 34, text="FAÇA UMA PERGUNTA PARA O PAI DA PROGRAMAÇÃO:")
     self.label_nome.pack()
 
     #Onde sera inserido o texto
@@ -19,10 +20,9 @@ class janela_principal:
     self.campo_nome.pack()
 
     #botão
-    self.botao_enviar = tk.Button(self.janela, text="DESEJAR BOM DIA 4MIL SUPER", command=self.desejar_bomdia)
+    self.botao_enviar = tk.Button(self.janela, text="PERGUNTAR", command=self.desejar_bomdia)
     self.botao_enviar.pack(pady=5)
-
-
+  
     self.label_resultado = tk.Label(self.janela, text="")
     self.label_resultado.pack()
 
@@ -35,4 +35,4 @@ class janela_principal:
   def run(self):
     """Inicia a self.janela"""
 
-    self.janela.mainloop()
+  self.janela.mainloop()
