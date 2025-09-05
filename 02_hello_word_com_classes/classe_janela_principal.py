@@ -35,4 +35,4 @@ class janela_principal:
   def run(self):
     """Inicia a self.janela"""
 
-  self.janela.mainloop()
+    self.janela.mainloop()
