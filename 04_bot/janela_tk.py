@@ -8,26 +8,27 @@ class Janela_chat():
         self.janela = ttk.Window(themename="solar",
                             title="RESPONDEDOR DE PERGUNTA PRO 3000 MIL")
         self.janela.geometry("1600x900+80+50")
+        self.janela.resizable(False, False)
 
         #Ira adicionar uma texto
         self.txt = ttk.Label(self.janela, text="FAÇA UMA PERGUNTA PARA O PAI DA PROGRAMAÇÃO")
         self.txt.pack(pady=20)
 
-        self.campo_nome = ttk.Entry(self.janela)
-        self.campo_nome.pack(pady=10)
-        self.campo_nome.insert(1, "Faça sua pergunta aqui")
+        self.campo_nome = ttk.Entry(self.janela,
+                                    width=70)
+        self.campo_nome.pack(pady=10,)
+        self.campo_nome.insert(1, "                                                Faça sua pergunta aqui")
 
-        self.label_resultado = ttk.Text(width=100, wrap="word")
+        self.label_resultado = ttk.Text(width=100, wrap="word",
+                                        state="disabled",)
         self.label_resultado.pack()
 
         #Vai adicionar um botão #02
         self.botao = ttk.Button(self.janela,
                                          text="PERGUNTAR",
-                                         style="Succes",
+                                         style="primary",
                                          cursor= "hand2",
-                                         command=self.responder
-                                         
-                                         )
+                                         command=self.responder)
         
         self.botao.place(x=780, y=490)
 
