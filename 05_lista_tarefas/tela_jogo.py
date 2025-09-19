@@ -1,12 +1,13 @@
-from google import genai
+
 import ttkbootstrap as ttk
 from ttkbootstrap.dialogs import Messagebox
+from classe_lista_tarefa import janela_Lista_Tarefas
 
 class Janela_chat():
     def __init__(self):
 
         #Janela
-        self.janela = ttk.Window(themename="journal",
+        self.janela = ttk.Window(themename="vapor",
                                    title="LOGIN")
         self.janela.geometry("800x400+80+400")
         self.janela.resizable(False, False)
@@ -63,18 +64,18 @@ class Janela_chat():
         self.resposta_senha = self.entry_senha.get()
 
         if self.resposta_usuario == "1" and self.resposta_senha == "1":
-            Messagebox.show_info(message="Login feito com Sucesso!", title="Sucesso", alert=True)
-
+            #Messagebox.show_info(message="Login feito com Sucesso!", title="Sucesso", alert=True)
+            janela_tarefas = janela_Lista_Tarefas()
+            janela_tarefas.run()
+            self.janela.destroy()
         else:
             Messagebox.show_info(message="Login Mal sucedido, informe a senha e o usuario certo", title="Falha", alert=True)
 
     def sair(self):
 
         resposta = Messagebox.show_question("DESEJA REALMENTE SAIR ?", "Deseja sair?")
-        if resposta:
-            self.janela.destroy()
-        else:
-            self.janela.mainloop()
+        if resposta == True:
+            exit()
 
     def redefinir(self):
 
@@ -85,7 +86,6 @@ class Janela_chat():
                                     title="REDEFINIR SENHA")
         self.redefinir.geometry("800x400+80+400")
         self.redefinir.resizable(False, False)
-        self.create_widgets()
 
         self.campos = ttk.Frame(self.redefinir)
         self.campos.pack(pady=10)
@@ -114,7 +114,6 @@ class Janela_chat():
 
         self.label_usu2 = self.label_usu2.get()
         self.resposta_usuario.set(self.label_usu2) # O texto do widget Label será atualizado
-
 
         self.redefinir.mainloop()
 
