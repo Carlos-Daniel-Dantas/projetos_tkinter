@@ -1,6 +1,7 @@
 import ttkbootstrap as tk
 from tkinter import Listbox, END
-from tkinter import Messagebox
+from tkinter import messagebox
+import sqlite3
 
 
 class janela_Lista_Tarefas():
@@ -8,7 +9,8 @@ class janela_Lista_Tarefas():
 
   def __init__(self):
 
-    self.janela = tk.Window(themename='vapor')
+    
+    self.janela = tk.Window(themename='morph')
     self.janela.title("LISTA TAREFAS")
     self.janela.geometry("1200x900+80+50")
 
@@ -56,22 +58,30 @@ class janela_Lista_Tarefas():
      self.lista.insert(0, tarefa)
 
   def excluir_tarefa(self):
+      
+      excluir_indice = self.lista.curselection()
 
-      item_selecionado = self.lista.curselection()
-      self.lista.delete(item_selecionado[0])
-     
+      if excluir_indice:
+         self.lista.delete(excluir_indice)
+      else:
+         messagebox.showerror(message="Selecione um item antes de excluir")
 
   def concluir_tarefa(self):
-     
-      item_concluido = self.lista.curselection()
-      self.lista.itemconfig(item_concluido, {"fg": "red", "selectforeground": "blue"})
+     item_selecionada = self.lista.curselection()
 
+     if item_selecionada:
+          texto_tarefa = self.lista.get(item_selecionada)
+          self.lista.delete(item_selecionada[0])
+          self.lista.insert(item_selecionada[0], texto_tarefa + "[CONCLUIDO]")
 
-  def confirmar_saida():
-    resposta = messagebox.askyesno("Confirmação", "Deseja realmente sair?")
-    if resposta:
+     else:
+            messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")
+
+  def confirmar_saida(self):
+
+    resposta = messagebox.showinfo("DESEJA REALMENTE SAIR ?")
+    if resposta == True:
         self.janela.destroy()
-
 
   def run(self):
     self.janela.mainloop()

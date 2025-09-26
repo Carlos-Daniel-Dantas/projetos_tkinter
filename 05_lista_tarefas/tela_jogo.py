@@ -1,7 +1,7 @@
-
 import ttkbootstrap as ttk
 from ttkbootstrap.dialogs import Messagebox
 from classe_lista_tarefa import janela_Lista_Tarefas
+
 
 class Janela():
 
