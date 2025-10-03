@@ -55,8 +55,6 @@ class janela_Lista_Tarefas():
     
     botao_marcar.pack(side="right", pady=20)
 
-
-
    #Conectando ao banco de dados
     conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
 
@@ -79,24 +77,28 @@ class janela_Lista_Tarefas():
     cursor.close()
     conexao.close()
 
-    #atualizar tarefa 
+    self.atualizar_lista()
 
-    conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
-    cursor = conexao.cursor()
+  def atualizar_lista(self):
 
-    sql_para_selecionar_tarefas = """
-                                    select codigo, descricao_tarefa from tarefa;
-                                 """
-    cursor.execute(sql_para_selecionar_tarefas)
+      #atualizar tarefa 
 
-    lista_de_tarefas =cursor.fetchall()
+      conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+      cursor = conexao.cursor()
 
-    cursor.close()
-    conexao.close()
+      sql_para_selecionar_tarefas = """
+                                       select codigo, descricao_tarefa from tarefa;
+                                    """
+      cursor.execute(sql_para_selecionar_tarefas)
 
-   #inserindo items listbox
-    for linha in lista_de_tarefas:
-       self.lista.insert("end", linha[1])
+      lista_de_tarefas =cursor.fetchall()
+
+      cursor.close()
+      conexao.close()
+
+      #inserindo items listbox
+      for linha in lista_de_tarefas:
+         self.lista.insert("end", linha[1])
 
   def adicionar_tarefa(self):
      #pegango o texto da caixa de texto
@@ -124,9 +126,28 @@ class janela_Lista_Tarefas():
       excluir_indice = self.lista.curselection()
 
       if excluir_indice:
+
          self.lista.delete(excluir_indice)
+
+         conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+         cursor = conexao.cursor()
+
+         sql_delete = """
+                           delete from tarefa WHERE = descricao_tarefa
+
+                     """
+         
+         cursor.execute(sql_delete, excluir_indice)
+
+         conexao.commit()
+
+         cursor.close()
+         conexao.close()
+
       else:
          messagebox.showerror(message="Selecione um item antes de excluir")
+
+
 
   def concluir_tarefa(self):
      item_selecionada = self.lista.curselection()
