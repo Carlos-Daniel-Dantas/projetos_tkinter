@@ -89,12 +89,14 @@ class janela_Lista_Tarefas():
                                  """
     cursor.execute(sql_para_selecionar_tarefas)
 
-    lista_de_tarefas = cursor.fetchall()
+    lista_de_tarefas =cursor.fetchall()
 
     cursor.close()
     conexao.close()
 
-
+   #inserindo items listbox
+    for linha in lista_de_tarefas:
+       self.lista.insert("end", linha[1])
 
   def adicionar_tarefa(self):
      #pegango o texto da caixa de texto
