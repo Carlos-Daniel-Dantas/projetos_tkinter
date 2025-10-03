@@ -13,7 +13,9 @@ class Janela():
         self.janela.geometry("800x400+80+400")
         self.janela.resizable(False, False)
 
-        self.label_titulo = ttk.Label(self.janela, text="FAÇA SEU LOGIN PARA AVANÇAR")
+        self.label_titulo = ttk.Label(self.janela, text="FAÇA SEU LOGIN PARA AVANÇAR",
+                                      style="danger",
+                                      font=("Arial", 12))
         self.label_titulo.pack(pady=20)
 
         # Campos de entrada para peso e altura
@@ -37,7 +39,8 @@ class Janela():
         # Botão 
         self.botao_avancar = ttk.Button(self.janela,
                                            text="LOGAR",
-                                           command= self.login
+                                           command= self.login,
+                                           cursor="hand2"
                                            )
         
         self.botao_avancar.place(y=200,x=320)
@@ -45,14 +48,16 @@ class Janela():
         #BOTÃO 02
         self.botao_avancar2 = ttk.Button(self.janela,
                                            text="SAIR",
-                                           command=self.sair)
+                                           command=self.sair,
+                                           cursor="hand2")
         
         self.botao_avancar2.place(y=200,x=410)
 
 
         self.botao_redefinir = ttk.Button(self.janela,
                                            text="ESQUECI MINHA SENHA",
-                                           command= self.redefinir
+                                           command= self.redefinir,
+                                           cursor="hand2"
                                            )
         
         self.botao_redefinir.place(y=250,x=315)

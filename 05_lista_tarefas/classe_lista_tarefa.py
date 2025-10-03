@@ -9,6 +9,7 @@ class janela_Lista_Tarefas():
 
   def __init__(self):
 
+
     
     self.janela = tk.Window(themename='morph')
     self.janela.title("LISTA TAREFAS")
@@ -28,7 +29,7 @@ class janela_Lista_Tarefas():
     tk.Button(self.frame_add, text="ADICIONAR", cursor="hand2", command=self.adicionar_tarefa).pack(side="right", padx=10)
 
     self.lista = Listbox(self.janela, font=("Segoe UI", 12), height=10)
-    self.lista.pack(padx=20,pady=20,fill='both', expand=True)
+    self.lista.pack(padx=15,pady=20,fill='both', expand=True)
 
                          
     frame_botao = tk.Frame(self.janela)
@@ -38,17 +39,61 @@ class janela_Lista_Tarefas():
 
     botao_excluir = tk.Button(frame_botao, 
                               text="Excluir", 
-                              style="Danger", command=self.excluir_tarefa)
+                              style="Danger", command=self.excluir_tarefa,
+                              cursor="hand2",
+                              width=40
+                              )
     
     botao_excluir.pack(side="left", padx=20)
 
     botao_marcar = tk.Button(frame_botao, 
                              text="marcar como concluido", 
-                             width=30, 
+                             width=40, 
                              style="primary",
-                             command=self.concluir_tarefa)
+                             command=self.concluir_tarefa,
+                             cursor="hand2")
     
-    botao_marcar.pack(side="right", padx=20)
+    botao_marcar.pack(side="right", pady=20)
+
+
+
+   #Conectando ao banco de dados
+    conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+
+   #Criando responsavel por comandar o Banco de Dados 
+    cursor = conexao.cursor()
+
+   #Criando tabela 
+    sql_para_criar_tabela = """
+                                 CREATE TABLE IF NOT EXISTS tarefa (
+                                 codigo integer primary key autoincrement,
+                                 descricao_tarefa varchar(200)
+                                 );
+                            """
+    cursor.execute(sql_para_criar_tabela)
+
+    # Confirma as alterações
+    conexao.commit()
+    
+    #fechei a conexão
+    cursor.close()
+    conexao.close()
+
+    #atualizar tarefa 
+
+    conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+    cursor = conexao.cursor()
+
+    sql_para_selecionar_tarefas = """
+                                    select codigo, descricao_tarefa from tarefa;
+                                 """
+    cursor.execute(sql_para_selecionar_tarefas)
+
+    lista_de_tarefas = cursor.fetchall()
+
+    cursor.close()
+    conexao.close()
+
 
 
   def adicionar_tarefa(self):
@@ -56,6 +101,21 @@ class janela_Lista_Tarefas():
      tarefa = self.add_tarefa.get()
 
      self.lista.insert(0, tarefa)
+
+     conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+     cursor = conexao.cursor()
+
+     sql_insert = """
+                     INSERT INTO tarefa (descricao_tarefa)
+                     VALUES (?)
+
+                 """
+     
+     cursor.execute(sql_insert,[tarefa])
+     conexao.commit()
+
+     cursor.close()
+     conexao.close()
 
   def excluir_tarefa(self):
       
@@ -76,8 +136,9 @@ class janela_Lista_Tarefas():
 
      else:
             messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")
-
+            
   def confirmar_saida(self):
+    
 
     resposta = messagebox.showinfo("DESEJA REALMENTE SAIR ?")
     if resposta == True:
