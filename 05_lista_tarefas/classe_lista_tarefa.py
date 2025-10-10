@@ -8,17 +8,17 @@ class janela_Lista_Tarefas():
   """Classe para a criação da self.janela principal"""
 
   def __init__(self):
-
-
     
-    self.janela = tk.Window(themename='morph')
+    self.janela = tk.Window(themename='cyborg')
     self.janela.title("LISTA TAREFAS")
-    self.janela.geometry("1200x900+80+50")
+    self.janela.geometry("1200x900+400+50")
 
     #Texto Adicionar
     self.tarefas = tk.Label(text="LISTA TAREFAS",
                             style="danger",
                             font=("Arial", 24)).pack(pady=20)
+    
+    self.janela.iconbitmap("IMG/logo.ico")
 
     self.frame_add = tk.Frame(self.janela)
     self.frame_add.pack(fill="x",padx=50)
@@ -123,43 +123,64 @@ class janela_Lista_Tarefas():
 
   def excluir_tarefa(self):
       
-      excluir_indice = self.lista.curselection()
+      item_selecionada = self.lista.curselection()
 
-      if excluir_indice:
+      excluir_tarefa = item_selecionada
 
-         self.lista.delete(excluir_indice)
+      if excluir_tarefa:
 
-         conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
-         cursor = conexao.cursor()
+         texto_tarefa = self.lista.get(excluir_tarefa)
 
-         sql_delete = """
-                           delete from tarefa WHERE = descricao_tarefa
+         self.lista.delete(excluir_tarefa)
 
-                     """
-         
-         cursor.execute(sql_delete, excluir_indice)
 
-         conexao.commit()
+         with sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite") as conexao:
+            cursor = conexao.cursor()
 
-         cursor.close()
-         conexao.close()
+            sql_delete = """
+                              delete from tarefa 
+                              WHERE descricao_tarefa = ?
+
+                         """
+            
+            cursor.execute(sql_delete, excluir_tarefa,)
+
+            conexao.commit()
+
+            cursor.close()
+            conexao.close()
 
       else:
          messagebox.showerror(message="Selecione um item antes de excluir")
 
-
-
   def concluir_tarefa(self):
      item_selecionada = self.lista.curselection()
-
+     
      if item_selecionada:
-          texto_tarefa = self.lista.get(item_selecionada)
-          self.lista.delete(item_selecionada[0])
-          self.lista.insert(item_selecionada[0], texto_tarefa + "[CONCLUIDO]")
+         texto_tarefa = self.lista.get(item_selecionada)
+       
+         if "[CONCLUIDO]" not in texto_tarefa:
+            self.lista.delete(item_selecionada[0])
+            texto_tarefa_concluido = texto_tarefa + "[CONCLUÍDO]"
+            self.lista.insert(item_selecionada[0], texto_tarefa_concluido)
 
+                  
+            with sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite") as conexao:
+               cursor = conexao.cursor()
+
+               sql_uptade = """     
+                                 UPDATE tarefa
+                                 SET descricao_tarefa = ?
+                                 WHERE descricao_tarefa = ?;
+                              """
+                  
+               valores = (texto_tarefa_concluido, texto_tarefa)
+
+               cursor.execute(sql_uptade, valores)
      else:
-            messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")
-            
+            messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")     
+
+
   def confirmar_saida(self):
     
 

@@ -8,15 +8,17 @@ class Janela():
     def __init__(self):
 
         #Janela
-        self.janela = ttk.Window(themename="vapor",
-                                   title="LOGIN")
-        self.janela.geometry("800x400+80+400")
+        self.janela = ttk.Window(themename="cyborg",
+                                   title="Login")
+        self.janela.geometry("800x400+500+290")
         self.janela.resizable(False, False)
 
         self.label_titulo = ttk.Label(self.janela, text="FAÇA SEU LOGIN PARA AVANÇAR",
-                                      style="danger",
+                                      style="light",
                                       font=("Arial", 12))
         self.label_titulo.pack(pady=20)
+
+        self.janela.iconbitmap("IMG/logo.ico")
 
         # Campos de entrada para peso e altura
         self.campos = ttk.Frame(self.janela)
@@ -49,9 +51,10 @@ class Janela():
         self.botao_avancar2 = ttk.Button(self.janela,
                                            text="SAIR",
                                            command=self.sair,
-                                           cursor="hand2")
+                                           cursor="hand2"
+                                           )
         
-        self.botao_avancar2.place(y=200,x=410)
+        self.botao_avancar2.place(y=200,x=320)
 
 
         self.botao_redefinir = ttk.Button(self.janela,
@@ -85,9 +88,9 @@ class Janela():
 
         self.janela.resizable(True, True)
 
-        self.redefinir = ttk.Window(themename="vapor",
+        self.redefinir = ttk.Window(themename="cyborg",
                                     title="REDEFINIR SENHA")
-        self.redefinir.geometry("800x400+80+400")
+        self.redefinir.geometry("800x400+500+290")
         self.redefinir.resizable(False, False)
 
         self.campos = ttk.Frame(self.redefinir)
