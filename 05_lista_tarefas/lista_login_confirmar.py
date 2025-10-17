@@ -4,12 +4,14 @@ from tkinter import messagebox
 import sqlite3
 
 
-class janela_Lista_Tarefas():
+class Janela_login():
   """Classe para a criação da self.janela principal"""
 
-  def __init__(self):
+  def __init__(self, janela_pai):
+
+    self.janela= tk.Toplevel(janela_pai)
     
-    self.janela = tk.Window(themename='cyborg')
+    #self.janela = tk.Window(themename='cyborg')
     self.janela.title("Login")
     self.janela.geometry("800x400+500+290")
 
@@ -20,23 +22,23 @@ class janela_Lista_Tarefas():
 
     self.janela.iconbitmap("IMG/logo.ico")
 
-    # Campos de entrada para peso e altura
+
     self.campos = tk.Frame(self.janela)
     self.campos.pack(pady=10)
 
-    self.label_nome = tk.Label(self.campos, text="NOME", padding=10) #Caixa 01 peso
+    self.label_nome = tk.Label(self.campos, text="NOME", padding=10) 
     self.label_nome.pack(padx=10)
 
     self.nova_nome = tk.Entry(self.campos, width=25,
-                                ) #Largura da caixa
+                                ) 
     self.nova_nome.pack(padx=10) 
 
 
-    self.usu = tk.Label(self.campos, text="USUÁRIO", padding=10) #Caixa 01 peso
+    self.usu = tk.Label(self.campos, text="USUÁRIO", padding=10) 
     self.usu.pack(padx=10)
 
     self.nova_usu = tk.Entry(self.campos, width=25,
-                                ) #Largura da caixa
+                                ) 
     self.nova_usu.pack(padx=10)
 
     self.senha = tk.Label(self.campos, text="SENHA", padding=10) #02 altura 

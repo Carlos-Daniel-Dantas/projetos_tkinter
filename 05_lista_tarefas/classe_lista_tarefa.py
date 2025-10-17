@@ -2,6 +2,8 @@ import ttkbootstrap as tk
 from tkinter import Listbox, END
 from tkinter import messagebox
 import sqlite3
+from lista_login_confirmar import Janela_login
+
 
 
 class janela_Lista_Tarefas():
@@ -76,6 +78,8 @@ class janela_Lista_Tarefas():
     #fechei a conexão
     cursor.close()
     conexao.close()
+
+    janela_login = Janela_login(self.janela)
 
     self.atualizar_lista()
 
@@ -187,6 +191,9 @@ class janela_Lista_Tarefas():
     resposta = messagebox.showinfo("DESEJA REALMENTE SAIR ?")
     if resposta == True:
         self.janela.destroy()
+
+   
+
 
   def run(self):
     self.janela.mainloop()

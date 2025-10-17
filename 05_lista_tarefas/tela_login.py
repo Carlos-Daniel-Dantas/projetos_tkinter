@@ -54,7 +54,7 @@ class Janela():
                                            cursor="hand2"
                                            )
         
-        self.botao_avancar2.place(y=200,x=320)
+        self.botao_avancar2.place(y=200,x=420)
 
 
         self.botao_redefinir = ttk.Button(self.janela,
