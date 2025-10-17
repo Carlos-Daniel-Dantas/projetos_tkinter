@@ -20,23 +20,27 @@ class Janela():
 
         self.janela.iconbitmap("IMG/logo.ico")
 
-        # Campos de entrada para peso e altura
         self.campos = ttk.Frame(self.janela)
         self.campos.pack(pady=10)
 
-        self.label_usu = ttk.Label(self.campos, text="USUÁRIO") #Caixa 01 peso
-        self.label_usu.pack(padx=10)
+        #------------------------------------------------------------------#
 
-        self.nova_usu = ttk.Entry(self.campos, width=25,
+        self.usuario = ttk.Label(self.campos, text="USUÁRIO") #Caixa 01 peso
+        self.usuario.pack(padx=10)
+
+        self.usuario = ttk.Entry(self.campos, width=25,
                                     ) #Largura da caixa
-        self.nova_usu.pack(padx=10) 
+        self.usuario.pack(padx=10) 
 
+        #------------------------------------------------------------------#
 
-        self.label_senha = ttk.Label(self.campos, text="SENHA") #02 altura 
-        self.label_senha.pack(padx=10)
+        self.senha = ttk.Label(self.campos, text="SENHA") #02 altura 
+        self.senha.pack(padx=10)
 
-        self.nova_senha = ttk.Entry(self.campos, width=25) #Largura da caixa
-        self.nova_senha.pack(padx=10)
+        self.senha = ttk.Entry(self.campos, width=25) #Largura da caixa
+        self.senha.pack(padx=10)
+
+        #------------------------------------------------------------------#
 
         # Botão 
         self.botao_avancar = ttk.Button(self.janela,
@@ -48,22 +52,15 @@ class Janela():
         self.botao_avancar.place(y=200,x=320)
 
         #BOTÃO 02
-        self.botao_avancar2 = ttk.Button(self.janela,
+        self.botao_sair = ttk.Button(self.janela,
                                            text="SAIR",
                                            command=self.sair,
                                            cursor="hand2"
                                            )
         
-        self.botao_avancar2.place(y=200,x=420)
+        self.botao_sair.place(y=200,x=420)
 
-
-        self.botao_redefinir = ttk.Button(self.janela,
-                                           text="ESQUECI MINHA SENHA",
-                                           command= self.redefinir,
-                                           cursor="hand2"
-                                           )
-        
-        self.botao_redefinir.place(y=250,x=315)
+        #------------------------------------------------------------------#
 
     def login(self):
         self.resposta_usuario = self.nova_usu.get()
@@ -82,47 +79,6 @@ class Janela():
         resposta = Messagebox.show_question("DESEJA REALMENTE SAIR ?", "Deseja sair?")
         if resposta == True:
             exit()
-
-    def redefinir(self):
-
-
-        self.janela.resizable(True, True)
-
-        self.redefinir = ttk.Window(themename="cyborg",
-                                    title="REDEFINIR SENHA")
-        self.redefinir.geometry("800x400+500+290")
-        self.redefinir.resizable(False, False)
-
-        self.campos = ttk.Frame(self.redefinir)
-        self.campos.pack(pady=10)
-
-        self.label_usu2 = ttk.Label(self.campos, text="NOVO USUARIO") #Caixa 01 peso
-        self.label_usu2.pack(padx=10)
-
-        self.nova_usu2 = ttk.Entry(self.campos, width=25,
-                                    ) #Largura da caixa
-        self.nova_usu2.pack(padx=10) 
-
-        self.label_senha2 = ttk.Label(self.campos, text="NOVA SENHA") #02 altura 
-        self.label_senha2.pack(padx=10)
-
-        self.nova_senha2 = ttk.Entry(self.campos, width=25) #Largura da caixa
-        self.nova_senha2.pack(padx=10)
-
-        self.botao_redefinir2 = ttk.Button(self.redefinir,
-                                           text="CONCLUIR",
-                                           command= self.redefinir
-                                           )
-        self.botao_redefinir2.place(y=100,x=400)
-        
-        self.label_senha2 = self.label_senha2.get()
-        self.resposta_usuario.set(self.label_senha2) # O texto do widget Label será atualizado
-
-        self.label_usu2 = self.label_usu2.get()
-        self.resposta_usuario.set(self.label_usu2) # O texto do widget Label será atualizado
-
-        self.redefinir.mainloop()
-
 
     def run(self):
         self.janela.mainloop()

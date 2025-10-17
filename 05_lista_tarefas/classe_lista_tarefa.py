@@ -81,6 +81,9 @@ class janela_Lista_Tarefas():
 
     janela_login = Janela_login(self.janela)
 
+    #escondendo anela da lista tarefas 
+    self.janela.withdraw()
+
     self.atualizar_lista()
 
   def atualizar_lista(self):
@@ -183,7 +186,6 @@ class janela_Lista_Tarefas():
                cursor.execute(sql_uptade, valores)
      else:
             messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")     
-
 
   def confirmar_saida(self):
     
