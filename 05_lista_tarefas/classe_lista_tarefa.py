@@ -2,7 +2,8 @@ import ttkbootstrap as tk
 from tkinter import Listbox, END
 from tkinter import messagebox
 import sqlite3
-from lista_login_confirmar import Janela_login
+from lista_cadastrar import Janela_login
+
 
 
 
@@ -86,27 +87,6 @@ class janela_Lista_Tarefas():
 
     self.atualizar_lista()
 
-  def atualizar_lista(self):
-
-      #atualizar tarefa 
-
-      conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
-      cursor = conexao.cursor()
-
-      sql_para_selecionar_tarefas = """
-                                       select codigo, descricao_tarefa from tarefa;
-                                    """
-      cursor.execute(sql_para_selecionar_tarefas)
-
-      lista_de_tarefas =cursor.fetchall()
-
-      cursor.close()
-      conexao.close()
-
-      #inserindo items listbox
-      for linha in lista_de_tarefas:
-         self.lista.insert("end", linha[1])
-
   def adicionar_tarefa(self):
      #pegango o texto da caixa de texto
      tarefa = self.add_tarefa.get()
@@ -124,6 +104,24 @@ class janela_Lista_Tarefas():
      
      cursor.execute(sql_insert,[tarefa])
      conexao.commit()
+
+     cursor.close()
+     conexao.close()
+
+
+  def atualizar_lista(self):
+
+   #atualizar tarefa 
+
+     conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+     cursor = conexao.cursor()
+
+     sql_para_selecionar_tarefas = """
+                                    select codigo, descricao_tarefa from tarefa;
+                                    """
+     cursor.execute(sql_para_selecionar_tarefas)
+
+     lista_de_tarefas =cursor.fetchall()
 
      cursor.close()
      conexao.close()

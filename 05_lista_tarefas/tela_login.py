@@ -13,10 +13,10 @@ class Janela():
         self.janela.geometry("800x400+500+290")
         self.janela.resizable(False, False)
 
-        self.label_titulo = ttk.Label(self.janela, text="FAÇA SEU LOGIN PARA AVANÇAR",
+        self.titulo = ttk.Label(self.janela, text="FAÇA SEU LOGIN PARA AVANÇAR",
                                       style="light",
                                       font=("Arial", 12))
-        self.label_titulo.pack(pady=20)
+        self.titulo.pack(pady=20)
 
         self.janela.iconbitmap("IMG/logo.ico")
 
@@ -63,8 +63,8 @@ class Janela():
         #------------------------------------------------------------------#
 
     def login(self):
-        self.resposta_usuario = self.nova_usu.get()
-        self.resposta_senha = self.nova_senha.get()
+        self.resposta_usuario = self.usuario.get()
+        self.resposta_senha = self.senha.get()
 
         if self.resposta_usuario == "1" and self.resposta_senha == "1":
             #Messagebox.show_info(message="Login feito com Sucesso!", title="Sucesso", alert=True)

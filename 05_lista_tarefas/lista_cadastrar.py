@@ -6,13 +6,12 @@ import sqlite3
 class Janela_login():
   """Classe para a criação da self.janela principal"""
 
-  def __init__(self, janela_pai):
+  def __init__(self, paidocadastro):
 
-    self.janela_pai = janela_pai
-    self.janela= tk.Toplevel(janela_pai)
+    self.paidocadastro = paidocadastro
+    self.janela= tk.Toplevel(paidocadastro)
     self.janela.resizable(False, False)
-
-
+    
     #configurando para que quando feche a janela de login ele encerre o programa
     self.janela.protocol("WM_DELETE_WINDOW", exit)
     
@@ -71,7 +70,8 @@ class Janela_login():
     # Botão 
     self.botao_avancar = tk.Button(self.janela,
                                     text="LOGAR",
-                                    cursor="hand2"
+                                    command=self.cadastro_funcao
+
                                     )
     
     self.botao_avancar.place(y=340,x=320)                
@@ -84,7 +84,62 @@ class Janela_login():
     self.botao_cancelar.place(y=340,x=400)
 
     #------------------------------------------------------------------
+
+
+    conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+
+   #Criando responsavel por comandar o Banco de Dados 
+    cursor = conexao.cursor()
+
+   #Criando tabela 
+    sql_para_criar_tabela_usuario = """
+                                CREATE TABLE IF NOT EXISTS usuarios (
+                                nome varchar(80),
+                                usuario varchar(24) primary key,
+                                senha varchar(20)
+
+                                );
+                            """
+    cursor.execute(sql_para_criar_tabela_usuario)
+
+    # Confirma as alterações
+    conexao.commit()
     
+    #fechei a conexão
+    cursor.close()
+    conexao.close()
+
+  def cadastro_funcao(self):
+          self.resposta_nome = self.campo_nome.get()
+          self.resposta_usuario = self.campo_usuario.get()
+          self.resposta_senha = self.senha.get()
+          self.resposta_senha2 = self.confirmar_senha.get()
+
+          if self.resposta_senha == self.resposta_senha2:
+              conexao = sqlite3.connect("05_lista_tarefas/bd_lista_tarefas.sqlite")
+              cursor = conexao.cursor()
+
+              sql_cadastrar_usuario = """
+                  INSERT INTO usuarios(nome, usuario, senha)
+                  VALUES(?, ?, ?)
+                  """
+              
+              valores = [self.resposta_nome, self.resposta_usuario, self.resposta_senha]
+
+              cursor.execute(sql_cadastrar_usuario, valores)
+              
+              conexao.commit()
+
+              messagebox.showinfo(message="você foi cadastrado!")
+              self.janela.destroy()
+              self.paidocadastro.deiconify()
+              
+              cursor.close()
+              conexao.close()
+              
+          else:
+              messagebox.showerror(message="Suas senhas não são iguais! ")
+
   def run(self):
     self.janela.mainloop()
 
