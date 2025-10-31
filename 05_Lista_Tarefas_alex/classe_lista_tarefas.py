@@ -144,10 +144,6 @@ class Janela_Lista_Tarefas():
         else:
             messagebox.showerror(message="Selecione um item antes de excluir!")
 
-        
-
-
-            
     def marcar_concluido(self):
         # Pegar o indice do item selecionado
         index_selecionado = self.lista.curselection()
