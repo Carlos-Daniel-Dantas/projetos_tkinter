@@ -17,7 +17,7 @@ class rastreador_de_habitos():
                 ttk.Label(frame_add,
                         text="MEUS HÁBITOS",
                         font=("Arial", 20),
-                        style="light",).pack(pady=20)
+                        style="primary",).pack(pady=15)
 
                 self.treeview = ttk.Treeview(frame_add, columns=("id", "hábito", "descrição", "frequencia")) # cria o widget Treeview tree.pack(fill="both", expand=True), cria as colunas e o cabeçalho
                 self.janela.title("Projeto Rastreador de Hábitos")
@@ -26,7 +26,7 @@ class rastreador_de_habitos():
                 #----------------Valor Coluna - text = Nome de exebição-----------------
                 self.treeview.heading("hábito", text="hábito")
                 self.treeview.heading("descrição", text="Descrição")
-                self.treeview.heading("frequencia", text="Frequencia",)
+                self.treeview.heading("frequencia", text="Frequência",)
                 self.treeview.heading("id", text="id",)
                 self.treeview.pack(pady=20)#Mostrar o os textos de exibição
 
@@ -51,7 +51,7 @@ class rastreador_de_habitos():
                                         );
                         
                                         """
-                
+                self.atualizar_tudo()
                 cursor.execute(sql_para_criar_tabela)
                 conexao.commit()
                 cursor.close()
@@ -78,30 +78,30 @@ class rastreador_de_habitos():
                         text= "Editar hábito", 
                         style="warning",
                         width=20,
-                        command=self.excluir_habito
+                        command=self.alterar_funcao
                         ).pack(side="right", padx=10)
 
                 ttk.Entry(frame_add
                         )
                 
                 ttk.Label(self.janela,
-                        text="HÁBITO", font=24).place(x=30, y=320)
+                        text="HÁBITO", font=24).place(x=30, y=300)
                 
                 ttk.Label(self.janela,
-                        text="DESCRIÇÃO", font=24).place(x=30, y=395)
+                        text="DESCRIÇÃO", font=24).place(x=30, y=425)
                 
                 ttk.Label(self.janela,
-                        text="FREQUENCIA", font=24).place(x=30, y=475)
+                        text="FREQUÊNCIA", font=24).place(x=30, y=545)
                 
 
                 self.campo_adicionar = ttk.Entry(self.janela) 
-                self.campo_adicionar.place(x=25, y=350, width=250)
+                self.campo_adicionar.place(x=25, y=350, width=450)
 
                 self.campo_descricao = ttk.Entry(self.janela) 
-                self.campo_descricao.place(x=25, y=430, width=250)
+                self.campo_descricao.place(x=25, y=470, width=450)
 
                 self.campo_frequencia = ttk.Entry(self.janela) 
-                self.campo_frequencia.place(x=25, y=510, width=250)
+                self.campo_frequencia.place(x=25, y=590, width=450)
 
         def adicionar_habito(self):
 
@@ -139,20 +139,21 @@ class rastreador_de_habitos():
                 for item in self.treeview.get_children():
                         self.treeview.delete(item) 
                 
-                        conexao = sqlite3.connect("06_projeto_treeview/habitos.db")
-                        cursor = conexao.cursor()
+                conexao = sqlite3.connect("06_projeto_treeview/habitos.db")
+                cursor = conexao.cursor()
 
-                        sql_select = "SELECT codigo, habito, descricao, frequencia FROM hábitos"
-                        
-                        cursor.execute(sql_select)
+                sql_select = "SELECT codigo, habito, descricao, frequencia FROM hábitos"
+                
+                cursor.execute(sql_select)
+                dados = cursor.fetchall() 
+                conexao.commit() 
+                cursor.close()
+                conexao.close()
 
                 for dado in dados: 
                         self.treeview.insert("", "end", values=dado)
                         
-                        dados = cursor.fetchall() 
-                        conexao.commit() 
-                        cursor.close()
-                        conexao.close()
+
 #-----------------------------------------------------------------------------------
 
         def excluir_habito(self):
@@ -170,7 +171,6 @@ class rastreador_de_habitos():
                                 sql_delete = """
                                                 delete from hábitos
                                                 WHERE codigo = ?
-
                                                 
                                                 """
                                 
@@ -190,6 +190,44 @@ class rastreador_de_habitos():
                         self.janela.destroy()
 
 
+
+        def alterar_funcao(self):
+
+                """Funcao para alterar itens da lista de carros."""
+                selecionado = self.treeview.selection()
+                if selecionado:
+                        # Pegando os novos coisas que vao ser alterada
+                        habito = self.campo_adicionar.get()
+                        frequencia = self.campo_frequencia.get()
+                        descricao = self.campo_descricao.get()
+
+                if habito != None and descricao != None and frequencia != None:
+                        # Pegando a linha do carro que foi selecionado
+                        habito_id = self.treeview.item(selecionado)["values"][0]
+
+                        # Atualizando no banco de dados
+                        conexao = sqlite3.connect("06_projeto_treeview/habitos.db")
+                        cursor = conexao.cursor()
+
+                        alterar_habitos = """
+                        UPDATE hábitos
+                        SET habito = ?, descricao = ?, frequencia = ?
+                        WHERE codigo = ?
+                        """
+                        valores = [habito, descricao, frequencia, habito_id]
+                        cursor.execute(alterar_habitos, valores)
+                        
+                        conexao.commit()
+                        cursor.close()
+                        conexao.close()
+
+                        self.atualizar_tudo()
+                        # Limpando os campos do formulário
+                        self.campo_adicionar.delete(0, "end")
+                        self.campo_frequencia.delete(0, "end")
+                        self.campo_descricao.delete(0, "end")
+                else:
+                        messagebox.showwarning("Aviso", "Você esqueceu de preencher algum campo")
 
         def run(self):
 
