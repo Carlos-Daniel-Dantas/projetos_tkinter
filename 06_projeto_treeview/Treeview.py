@@ -1,12 +1,13 @@
 import ttkbootstrap as ttk
 import sqlite3
+from tkinter import messagebox
 
 class rastreador_de_habitos():
 
         def __init__(self):
 
 
-                self.janela = ttk.Window(themename="superhero") # cria a janela principal tree =
+                self.janela = ttk.Window(themename="cyborg") # cria a janela principal tree =
                 self.janela.title("Rastreador de Hábitos")
                 self.janela.geometry("1000x680+300+50")
 
@@ -43,7 +44,7 @@ class rastreador_de_habitos():
 
                 sql_para_criar_tabela = """
                                         CREATE TABLE IF NOT EXISTS hábitos (
-                                        codigo primary key autoincrement,
+                                        codigo INTEGER primary key autoincrement,
                                         habito varchar(20),
                                         descricao varchar(20),
                                         frequencia varchar(20)
@@ -142,13 +143,12 @@ class rastreador_de_habitos():
                         cursor = conexao.cursor()
 
                         sql_select = "SELECT codigo, habito, descricao, frequencia FROM hábitos"
-
+                        
                         cursor.execute(sql_select)
 
                 for dado in dados: 
                         self.treeview.insert("", "end", values=dado)
                         
-
                         dados = cursor.fetchall() 
                         conexao.commit() 
                         cursor.close()
@@ -157,29 +157,38 @@ class rastreador_de_habitos():
 
         def excluir_habito(self):
                 
-                item_selecionado = self.treeview.selection()
+                item_selecionado = self.treeview.selection()[0]
 
-
+                valores = self.treeview.item(item_selecionado, "values")
+                codigo_para_excluir = valores[0]
 
                 if item_selecionado:
-
-                        self.treeview.delete(item_selecionado)
 
                         with sqlite3.connect("06_projeto_treeview/habitos.db") as conexao:
                                 cursor = conexao.cursor()
 
                                 sql_delete = """
-                                                delete from habito
+                                                delete from hábitos
                                                 WHERE codigo = ?
 
+                                                
                                                 """
                                 
-                                cursor.execute(sql_delete)
+                        cursor.execute(sql_delete, (codigo_para_excluir,))
+                                        
+                        conexao.commit() 
 
-                                conexao.commit()
+                        self.treeview.delete(item_selecionado)
 
-                                cursor.close()
-                                conexao.close()
+                        cursor.close()
+                        conexao.close()
+
+        def confirmar_saida(self):
+    
+                resposta = messagebox.askyesno("Deseja realmente sair ?")
+                if resposta == True:
+                        self.janela.destroy()
+
 
 
         def run(self):
