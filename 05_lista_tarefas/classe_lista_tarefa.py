@@ -192,9 +192,6 @@ class janela_Lista_Tarefas():
     if resposta == True:
         self.janela.destroy()
 
-   
-
-
   def run(self):
     self.janela.mainloop()
 

@@ -183,14 +183,6 @@ class rastreador_de_habitos():
                         cursor.close()
                         conexao.close()
 
-        def confirmar_saida(self):
-    
-                resposta = messagebox.askyesno("Deseja realmente sair ?")
-                if resposta == True:
-                        self.janela.destroy()
-
-
-
         def alterar_funcao(self):
 
                 """Funcao para alterar itens da lista de carros."""
@@ -229,6 +221,12 @@ class rastreador_de_habitos():
                 else:
                         messagebox.showwarning("Aviso", "Você esqueceu de preencher algum campo")
 
+        def confirmar_saida(self):
+
+                resposta = messagebox.showinfo("DESEJA REALMENTE SAIR ?")
+                if resposta == True:
+                        self.janela.destroy()
+                
         def run(self):
 
                 self.janela.mainloop()
