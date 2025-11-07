@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 import sqlite3
 from tkinter import messagebox
+import tkinter
 
 class rastreador_de_habitos():
 
@@ -9,17 +10,14 @@ class rastreador_de_habitos():
 
                 self.janela = ttk.Window(themename="cyborg") # cria a janela principal tree =
                 self.janela.title("Rastreador de Hábitos")
-                self.janela.geometry("1000x680+300+50")
+                self.janela.geometry("1200x680+300+50")
+                self.janela.resizable(False, False)
+                self.janela.iconbitmap("IMG/logo.ico")
 
                 frame_add = ttk.Frame(self.janela)
-                frame_add.pack(fill="x", padx=20)
+                frame_add.pack(fill="x", pady=10)
 
-                ttk.Label(frame_add,
-                        text="MEUS HÁBITOS",
-                        font=("Arial", 20),
-                        style="primary",).pack(pady=15)
-
-                self.treeview = ttk.Treeview(frame_add, columns=("id", "hábito", "descrição", "frequencia")) # cria o widget Treeview tree.pack(fill="both", expand=True), cria as colunas e o cabeçalho
+                self.treeview = ttk.Treeview(frame_add, style="primary", height=15, columns=("id", "hábito", "descrição", "frequencia")) # cria o widget Treeview tree.pack(fill="both", expand=True), cria as colunas e o cabeçalho
                 self.janela.title("Projeto Rastreador de Hábitos")
                 self.treeview["show"] = "headings"
 
@@ -28,12 +26,12 @@ class rastreador_de_habitos():
                 self.treeview.heading("descrição", text="Descrição")
                 self.treeview.heading("frequencia", text="Frequência",)
                 self.treeview.heading("id", text="id",)
-                self.treeview.pack(pady=20)#Mostrar o os textos de exibição
+                self.treeview.pack(padx=10, pady=20)#Mostrar o os textos de exibição
 
                 self.treeview.column("id", anchor="center", width=25)
-                self.treeview.column("hábito", anchor="center", width=300)
-                self.treeview.column("descrição", anchor="center", width=350)
-                self.treeview.column("frequencia", anchor="center", width=350)
+                self.treeview.column("hábito", anchor="center", width=380)
+                self.treeview.column("descrição", anchor="center", width=450)
+                self.treeview.column("frequencia", anchor="center", width=450)
 
                 #-----------------Criando banco de dados--------------------------------
 
@@ -63,21 +61,21 @@ class rastreador_de_habitos():
                 adicionar = ttk.Button(frame_add,
                         text= "Adiconar hábito", 
                         style="success",
-                        width=20,
+                        width=25,
                         command=self.adicionar_habito
                         ).pack(side="right", padx=10)
                 
                 remover = ttk.Button(frame_add,
                         text= "Remover selecionado", 
                         style="danger",
-                        width=20,
+                        width=25,
                         command=self.excluir_habito
                         ).pack(side="right", padx=10)
                 
                 editar = ttk.Button(frame_add,
                         text= "Editar hábito", 
                         style="warning",
-                        width=20,
+                        width=25,
                         command=self.alterar_funcao
                         ).pack(side="right", padx=10)
 
@@ -102,6 +100,7 @@ class rastreador_de_habitos():
 
                 self.campo_frequencia = ttk.Entry(self.janela) 
                 self.campo_frequencia.place(x=25, y=590, width=450)
+
 
         def adicionar_habito(self):
 
