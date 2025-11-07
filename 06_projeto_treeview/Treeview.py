@@ -8,7 +8,7 @@ class rastreador_de_habitos():
         def __init__(self):
 
 
-                self.janela = ttk.Window(themename="cyborg") # cria a janela principal tree =
+                self.janela = ttk.Window(themename="cyborg") 
                 self.janela.title("Rastreador de Hábitos")
                 self.janela.geometry("1200x680+300+50")
                 self.janela.resizable(False, False)
@@ -83,13 +83,13 @@ class rastreador_de_habitos():
                         )
                 
                 ttk.Label(self.janela,
-                        text="HÁBITO", font=24).place(x=30, y=300)
+                        text="Hábito ( Adicione um hábito que você deseja realizar )", font=24).place(x=30, y=300)
                 
                 ttk.Label(self.janela,
-                        text="DESCRIÇÃO", font=24).place(x=30, y=425)
+                        text="Descrição ( Detalhe a descrição do seu hábito )", font=24).place(x=30, y=425)
                 
                 ttk.Label(self.janela,
-                        text="FREQUÊNCIA", font=24).place(x=30, y=545)
+                        text="FREQUÊNCIA ( Adicione a frequência que você realizara este hábito )", font=24).place(x=30, y=545)
                 
 
                 self.campo_adicionar = ttk.Entry(self.janela) 
@@ -152,7 +152,6 @@ class rastreador_de_habitos():
                 for dado in dados: 
                         self.treeview.insert("", "end", values=dado)
                         
-
 #-----------------------------------------------------------------------------------
 
         def excluir_habito(self):
@@ -181,6 +180,8 @@ class rastreador_de_habitos():
 
                         cursor.close()
                         conexao.close()
+                else:
+                        messagebox.showerror(title="ERRO", message="Selecione um item antes de excluir")
 
         def alterar_funcao(self):
 
@@ -217,15 +218,7 @@ class rastreador_de_habitos():
                         self.campo_adicionar.delete(0, "end")
                         self.campo_frequencia.delete(0, "end")
                         self.campo_descricao.delete(0, "end")
-                else:
-                        messagebox.showwarning("Aviso", "Você esqueceu de preencher algum campo")
 
-        def confirmar_saida(self):
-
-                resposta = messagebox.showinfo("DESEJA REALMENTE SAIR ?")
-                if resposta == True:
-                        self.janela.destroy()
-                
         def run(self):
 
                 self.janela.mainloop()
