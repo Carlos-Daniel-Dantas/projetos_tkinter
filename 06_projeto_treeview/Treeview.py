@@ -1,7 +1,7 @@
 import ttkbootstrap as ttk
 import sqlite3
 from tkinter import messagebox
-import tkinter
+
 
 class rastreador_de_habitos():
 
@@ -33,6 +33,28 @@ class rastreador_de_habitos():
                 self.treeview.column("descrição", anchor="center", width=450)
                 self.treeview.column("frequencia", anchor="center", width=450)
 
+
+                self.treeview.bind("<<TreeviewSelect>>", self.atualizar_dias)
+
+                #-----------------Criando Desafio final---------------------------------
+
+                ttk.Label(self.janela,
+                text="Chekin",style="primary", font=27).place(x=620, y=380)
+
+                ttk.Label(self.janela,
+                text="Selecione um hábito", font=24).place(x=620, y=420)
+
+                ttk.Button(self.janela,
+                        text= "Registrar hábito", 
+                        style="success",
+                        width=25,
+                        command=self.registrar_habito
+                        
+                        ).place(x=620, y=450 )
+                
+                self.dias_contados = ttk.Label(self.janela, text="0 DIAS", font=("Arial", 24, "bold"), style="success")
+                self.dias_contados.place(x=830, y=560)
+                
                 #-----------------Criando banco de dados--------------------------------
 
                 #conectando ao banco de dados
@@ -46,15 +68,29 @@ class rastreador_de_habitos():
                                         habito varchar(20),
                                         descricao varchar(20),
                                         frequencia varchar(20)
+                                        
                                         );
                         
                                         """
-                self.atualizar_tudo()
+                
                 cursor.execute(sql_para_criar_tabela)
+
+                sql_desafio_final = """
+                                        CREATE TABLE IF NOT EXISTS chekin (
+                                        codigo INTEGER primary key autoincrement,
+                                        habito_cod integer,
+                                        data date
+                                        );
+                        
+                                        """
+                cursor.execute(sql_desafio_final)
+
+
                 conexao.commit()
                 cursor.close()
                 conexao.close()
 
+                self.atualizar_tudo()
                 #treeview.insert("", "end", values=["Godofredo", "3", "Matão"]) #Resultado das colunas da tabela  #END adiciona ao final
 
 
@@ -132,6 +168,55 @@ class rastreador_de_habitos():
                 novo_id = cursor.lastrowid
                 
                 self.treeview.insert("","end", values=[novo_id, habito, descricao, frequencia])
+
+        def registrar_habito(self):
+
+                item_selecionado = self.treeview.selection()
+                codigoDoSelecionado = self.treeview.item(item_selecionado)["values"][0]
+
+                conexao = sqlite3.connect("06_projeto_treeview/habitos.db")
+                cursor = conexao.cursor()
+
+                sql_registrar_habito = """
+                                        INSERT INTO chekin(habito_cod, data)
+                                        VALUES(?, DATE('now'));
+                                        """
+                
+                # data now é para colocar o dia de  hoje
+                valores = (codigoDoSelecionado,)
+
+                cursor.execute(sql_registrar_habito, valores)
+                dados = cursor.fetchall() 
+                conexao.commit() 
+                cursor.close()
+                conexao.close()
+
+        def atualizar_dias(self, event):
+                
+                item_selecionado = self.treeview.selection()
+                codigoDoSelecionado = self.treeview.item(item_selecionado)["values"][0]
+
+                conexao = sqlite3.connect("06_projeto_treeview/habitos.db")
+                cursor = conexao.cursor()
+
+                atualizar_data_sql = """
+                                        SELECT codigo from chekin 
+                                        where habito_cod = ?
+                                        """
+                
+                # data now é para colocar o dia de  hoje
+                valores = (codigoDoSelecionado,)
+
+                cursor.execute(atualizar_data_sql, valores)
+
+                dados = cursor.fetchall() 
+                qntd_dias = len(dados)
+
+                self.dias_contados.config(text=f"{qntd_dias} Dias")
+
+                conexao.commit() 
+                cursor.close()
+                conexao.close()
 
         def atualizar_tudo(self):
                 # 1. Limpa o treeview (OK)
